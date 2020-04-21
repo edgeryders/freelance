@@ -62,25 +62,7 @@ const generateUsername = form =>
   )}`;
 
 const generateResponse = form =>
-  Object.values(form)
-    .map(({ body, settings: { omitBody, omitFields }, ...fields }) => [
-      omitBody ? "" : `**${body}**`,
-      Object.entries(fields)
-        .filter(
-          ([
-            ,
-            {
-              settings: { omit }
-            }
-          ]) => !omit
-        )
-        .map(([field, { value }]) =>
-          [omitFields ? "" : `**${field}:** `, value].join("")
-        )
-        .join("\n")
-    ])
-    .flat()
-    .join("\n\n");
+  `<pre>${JSON.stringify(form)}</pre>`
 
 export default (form, errorMessages) =>
   createUser(
