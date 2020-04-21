@@ -428,6 +428,7 @@ import Multiselect from "vue-multiselect";
 import VueTagsInput from '@johmun/vue-tags-input';
 import ajaxFindCountry from "../helpers/cities_api";
 import ajaxFindLanguage from "../helpers/languages_api";
+import submitForm from "../helpers/discourse";
 import CryptoJS from "crypto-js";
 
 export default {
@@ -618,7 +619,17 @@ export default {
       }
     },
     submitForm(){
-      this.next('four');
+      submitForm({
+        account: this.transformForSubmit(this.form.account),
+        profile: this.transformForSubmit(this.form.profile)
+      }).then(() => this.next('four'))
+    },
+    transformForSubmit(obj) {
+      return Object.entries(JSON.parse(JSON.stringify(obj)))
+        .reduce((result, [key, value]) => {
+          result[key] = { value: (value && value.text) || value };
+          return result;
+        }, {});
     },
     addTag(newTag) {
       const tag = {
